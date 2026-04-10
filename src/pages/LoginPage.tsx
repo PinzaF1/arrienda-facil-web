@@ -1,4 +1,4 @@
-function App() {
+export default function LoginPage() {
   return (
     <div style={{
       display: 'flex',
@@ -15,19 +15,19 @@ function App() {
         maxWidth: '420px',
         boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
       }}>
-        <h1 style={{ textAlign: 'center', color: '#1f2937', margin: '0 0 8px 0', fontSize: '28px' }}>
+        <h1 style={{ textAlign: 'center', color: '#1f2937', margin: '0 0 8px 0' }}>
           Arrienda Fácil
         </h1>
-        <p style={{ textAlign: 'center', color: '#6b7280', margin: '0 0 32px 0', fontSize: '14px' }}>
+        <p style={{ textAlign: 'center', color: '#6b7280', margin: '0 0 32px 0' }}>
           Inicia sesión en tu cuenta
         </p>
 
         <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }} onSubmit={(e) => {
           e.preventDefault();
-          alert('✅ Formulario de login funcionando correctamente!');
+          alert('Login enviado');
         }}>
           <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#1f2937' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>
               Email
             </label>
             <input
@@ -40,13 +40,12 @@ function App() {
                 borderRadius: '8px',
                 fontSize: '14px',
                 boxSizing: 'border-box',
-                fontFamily: 'inherit',
               }}
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#1f2937' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>
               Contraseña
             </label>
             <input
@@ -59,7 +58,6 @@ function App() {
                 borderRadius: '8px',
                 fontSize: '14px',
                 boxSizing: 'border-box',
-                fontFamily: 'inherit',
               }}
             />
           </div>
@@ -75,30 +73,16 @@ function App() {
               fontSize: '15px',
               fontWeight: '600',
               cursor: 'pointer',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              (e.target as HTMLButtonElement).style.transform = 'translateY(-2px)';
-              (e.target as HTMLButtonElement).style.boxShadow = '0 8px 20px rgba(102, 126, 234, 0.4)';
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLButtonElement).style.transform = 'translateY(0)';
-              (e.target as HTMLButtonElement).style.boxShadow = 'none';
             }}
           >
             Iniciar sesión
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: '20px', color: '#6b7280', fontSize: '14px' }}>
-          ¿No tienes cuenta? <a href="#" style={{ color: '#667eea', textDecoration: 'none', fontWeight: '600' }} onClick={(e) => {
-            e.preventDefault();
-            alert('🔗 Ir a registro (próximamente)');
-          }}>Regístrate aquí</a>
+        <p style={{ textAlign: 'center', marginTop: '20px', color: '#6b7280' }}>
+          ¿No tienes cuenta? <a href="/register" style={{ color: '#667eea', textDecoration: 'none' }}>Regístrate aquí</a>
         </p>
       </div>
     </div>
   );
 }
-
-export default App
