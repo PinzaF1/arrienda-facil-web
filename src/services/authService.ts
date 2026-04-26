@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LoginFormData, RegisterFormData } from '../schemas/authSchema';
+import type { LoginFormData } from '../schemas/authSchema';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 
@@ -29,13 +29,20 @@ export interface AuthResponse {
   };
 }
 
+export interface RegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
 export const authService = {
   login: async (data: LoginFormData): Promise<AuthResponse> => {
     const response = await axiosInstance.post('/auth/login', data);
     return response.data;
   },
 
-  register: async (data: RegisterFormData): Promise<AuthResponse> => {
+  register: async (data: RegisterPayload): Promise<AuthResponse> => {
     const response = await axiosInstance.post('/auth/register', data);
     return response.data;
   },

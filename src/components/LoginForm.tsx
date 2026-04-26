@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { loginSchema, LoginFormData } from '../schemas/authSchema';
+import { loginSchema } from '../schemas/authSchema';
+import type { LoginFormData } from '../schemas/authSchema';
 import { useAuthStore } from '../store/authStore';
 import { Mail, Lock, AlertCircle, Loader } from 'lucide-react';
 import './LoginForm.css';

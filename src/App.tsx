@@ -1,104 +1,26 @@
+import { Navigate, Route, Routes } from 'react-router-dom';
+import DashboardPage from './pages/DashboardPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ProtectedRoute from './components/ProtectedRoute';
+
 function App() {
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    }}>
-      <div style={{
-        background: 'white',
-        borderRadius: '12px',
-        padding: '40px',
-        width: '100%',
-        maxWidth: '420px',
-        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-      }}>
-        <h1 style={{ textAlign: 'center', color: '#1f2937', margin: '0 0 8px 0', fontSize: '28px' }}>
-          Arrienda Fácil
-        </h1>
-        <p style={{ textAlign: 'center', color: '#6b7280', margin: '0 0 32px 0', fontSize: '14px' }}>
-          Inicia sesión en tu cuenta
-        </p>
-
-        <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }} onSubmit={(e) => {
-          e.preventDefault();
-          alert('✅ Formulario de login funcionando correctamente!');
-        }}>
-          <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#1f2937' }}>
-              Email
-            </label>
-            <input
-              type="email"
-              placeholder="correo@ejemplo.com"
-              style={{
-                width: '100%',
-                padding: '12px',
-                border: '2px solid #e5e7eb',
-                borderRadius: '8px',
-                fontSize: '14px',
-                boxSizing: 'border-box',
-                fontFamily: 'inherit',
-              }}
-            />
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#1f2937' }}>
-              Contraseña
-            </label>
-            <input
-              type="password"
-              placeholder="Ingresa tu contraseña"
-              style={{
-                width: '100%',
-                padding: '12px',
-                border: '2px solid #e5e7eb',
-                borderRadius: '8px',
-                fontSize: '14px',
-                boxSizing: 'border-box',
-                fontFamily: 'inherit',
-              }}
-            />
-          </div>
-
-          <button
-            type="submit"
-            style={{
-              padding: '12px',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '15px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              (e.target as HTMLButtonElement).style.transform = 'translateY(-2px)';
-              (e.target as HTMLButtonElement).style.boxShadow = '0 8px 20px rgba(102, 126, 234, 0.4)';
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLButtonElement).style.transform = 'translateY(0)';
-              (e.target as HTMLButtonElement).style.boxShadow = 'none';
-            }}
-          >
-            Iniciar sesión
-          </button>
-        </form>
-
-        <p style={{ textAlign: 'center', marginTop: '20px', color: '#6b7280', fontSize: '14px' }}>
-          ¿No tienes cuenta? <a href="#" style={{ color: '#667eea', textDecoration: 'none', fontWeight: '600' }} onClick={(e) => {
-            e.preventDefault();
-            alert('🔗 Ir a registro (próximamente)');
-          }}>Regístrate aquí</a>
-        </p>
-      </div>
-    </div>
+    <Routes>
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+    </Routes>
   );
 }
 
-export default App
+export default App;

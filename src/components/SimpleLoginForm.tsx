@@ -17,6 +17,7 @@ export default function SimpleLoginForm({ onSuccess }: SimpleLoginFormProps) {
     // Simular un delay
     setTimeout(() => {
       setLoading(false);
+      onSuccess?.();
       alert('Formulario enviado:\n' + JSON.stringify({ email, password }, null, 2));
     }, 1000);
   };
