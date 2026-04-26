@@ -1,6 +1,7 @@
 import { create } from 'zustand';
-// import { authService, AuthResponse } from '../services/authService';
-// import { LoginFormData, RegisterFormData } from '../schemas/authSchema';
+import { authService } from '../services/authService';
+import type { AuthResponse } from '../services/authService';
+import type { LoginFormData, RegisterFormData } from '../schemas/authSchema';
 
 export interface User {
   id: number;
@@ -16,8 +17,8 @@ export interface AuthStore {
   isAuthenticated: boolean;
 
   // Actions
-  login: (data: any) => Promise<void>;
-  register: (data: any) => Promise<void>;
+  login: (data: LoginFormData) => Promise<void>;
+  register: (data: RegisterFormData) => Promise<void>;
   logout: () => Promise<void>;
   setUser: (user: User | null) => void;
   setToken: (token: string | null) => void;
@@ -32,24 +33,19 @@ export const useAuthStore = create<AuthStore>((set) => ({
   error: null,
   isAuthenticated: false,
 
-  login: async (data: any) => {
+  login: async (data: LoginFormData) => {
     set({ isLoading: true, error: null });
     try {
-      // const response: AuthResponse = await authService.login(data);
-      // localStorage.setItem('token', response.access_token);
-      // set({
-      //   user: response.user,
-      //   token: response.access_token,
-      //   isAuthenticated: true,
-      //   isLoading: false,
-      // });
-      console.log('Login called with:', data);
+      const response: AuthResponse = await authService.login(data);
+      localStorage.setItem('token', response.access_token);
       set({
+        user: response.user,
+        token: response.access_token,
+        isAuthenticated: true,
         isLoading: false,
-        error: 'Backend not connected yet'
       });
     } catch (error: any) {
-      const errorMessage = error.message || 'Error al iniciar sesión';
+      const errorMessage = error.response?.data?.message || error.message || 'Error al iniciar sesión';
       set((state) => ({
         ...state,
         error: errorMessage,
@@ -59,25 +55,26 @@ export const useAuthStore = create<AuthStore>((set) => ({
     }
   },
 
-  register: async (data: any) => {
+  register: async (data: RegisterFormData) => {
     set({ isLoading: true, error: null });
     try {
-      // const { passwordConfirm, ...registerData } = data;
-      // const response: AuthResponse = await authService.register(registerData);
-      // localStorage.setItem('token', response.access_token);
-      // set({
-      //   user: response.user,
-      //   token: response.access_token,
-      //   isAuthenticated: true,
-      //   isLoading: false,
-      // });
-      console.log('Register called with:', data);
+      const registerPayload = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        password_confirmation: data.passwordConfirm,
+      };
+      // Keep register payload isolated from login credentials contract.
+      const response: AuthResponse = await authService.register(registerPayload);
+      localStorage.setItem('token', response.access_token);
       set({
+        user: response.user,
+        token: response.access_token,
+        isAuthenticated: true,
         isLoading: false,
-        error: 'Backend not connected yet'
       });
     } catch (error: any) {
-      const errorMessage = error.message || 'Error al registrarse';
+      const errorMessage = error.response?.data?.message || error.message || 'Error al registrarse';
       set((state) => ({
         ...state,
         error: errorMessage,
@@ -90,7 +87,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   logout: async () => {
     set({ isLoading: true, error: null });
     try {
-      // await authService.logout();
+      await authService.logout();
       localStorage.removeItem('token');
       set({
         user: null,
@@ -130,9 +127,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
     try {
       const token = localStorage.getItem('token');
       if (token) {
-        // const user = await authService.getCurrentUser();
+        const user = await authService.getCurrentUser();
         set({
-          // user,
+          user,
           token,
           isAuthenticated: true,
         });
